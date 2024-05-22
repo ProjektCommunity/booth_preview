@@ -1,66 +1,1116 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | Booth Web Preview</title>
-    <script src="Build/4ee3225c15a3b3070c6301db3e7e2133.js"></script>
-  </head>
-  <body>
-    <div class="topnav">
-      <div id="uploadbtn" class="title">Upload file:
-        
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>PJKT Booth Wizard</title>
+</head>
+
+<body>
+  <div id="mobile-error" style="display: none; font-size: 5em;">
+    <p>This site is not supported on mobile devices. Please use a desktop browser!!!!</p>
+  </div>
+  <div class="mainContainer">
+    <div class="unityContainer">
+      <canvas id="unity-canvas">
+      </canvas>
+      <!-- progress number -->
+      <div class="progressNumber" id="progressNumber" style="display: block;">Downloading...</div>
+    </div>
+    <div class="rightContainer">
+      <div class="boxContainer">
+        <div><b>Need help creating a poster?</b></div>
+        <div>Upload individual images here to create one!</div>
+        <!-- <br> -->
+        <div id="topBannerButton" class="uploadContainer">
+          <div>Top Banner</div>
+          <div>2048x512</div>
+        </div>
+        <div id="neonGradientButton" class="uploadContainer">
+          <div>Emissions</div>
+          <div>213x150</div>
+        </div>
+        <!-- <div class="posterUploadGrid"> -->
+          <div id="leftPosterButton" class="uploadContainer">
+            <div>Left Poster</div>
+            <div>1357x1357</div>
+          </div>
+          <div id="deskPosterButton" class="uploadContainer">
+            <div>Desk Poster</div>
+            <div>462x761</div>
+          </div>
+          <div id="rightPosterButton" class="uploadContainer">
+            <div>Right Poster</div>
+            <div>764x1357</div>
+          </div>
+        <!-- </div> -->
+        <div id="lcdDisplayPoster" class="uploadContainer">
+          <div>LCD Displays</div>
+          <div>461x739</div>
+        </div>
+        <div>Done with your booth?</div>
+        <div theme="font-size: 0.5">Login and submit down below!</div>
+      </div>
+      <div class="boxContainer">
+        <div>Got your poster ready?</div>
+        <div>Preview it here to submit it!</div>
+        <div class="smallText">2048x2048</div>
+        <div id="premadeUploadButton" class="title">
+                    <!-- Testing Poster Image Field -->
+                    <!-- <input type="file" id="finalUploadButton" accept="image/png"> -->
+        </div>
+        <br>
+        <a id="downloadButton" onclick="downloadPoster()">Download the full template</a>
+
+        <script>
+          function downloadPoster() {
+            // Open the template in a new tab
+            window.open("./Prefab Poster Sheet.png", "_blank");
+
+          }
+        </script>
+      </div>
+      <div class="boxContainerLogin">
+        <div class="errorSection" id="errorNotification" style="display: none;">Error</div>
+        <div class="loginButtons">
+          <div id="userName">
+          </div>
+          <input type="text" id="email" placeholder="Email">
+          <input type="password" id="password" placeholder="Password">
+          <button id="loginButton">Login</button>
+          <br>
+          <br>
+          <div>Need an account? <button id="registerButton">Register!</button> </div>
+        </div>
+        <div style="display: none;" class="codeCheck">
+          <div class="titleText">Nuh uh, what's the passcode?</div>
+          <!-- <div class="errorSection" id="codeCheckErrorSection" style="display: none;">Error.</div> -->
+          <input type="text" id="inviteCode" placeholder="Invite Code">
+          <button id="codeCheckButton">Check Code</button>
+        </div>
+        <div style="display: none;"class="registerForm">
+          <div class="titleText">Hell YE! Register here!</div>
+          <!-- <div class="errorSection" id="registerErrorSection" style="display: none;">That doesn't seem right.</div> -->
+          <input type="text" id="registerEmail" placeholder="Email">
+          <input type="text" id="registerUsername" placeholder="Username">
+          <input type="password" id="registerPassword" placeholder="Password">
+          <input type="password" id="registerPasswordConfirm" placeholder="Confirm Password">
+          <button id="registerSubmitButtonFinal">Register</button>
+        </div>
+        <div style="display: none;" class="uploadButtons">
+          <div class="userNameMOTD" id="userNameMOTD"></div>
+          <button id="logoutButton">Logout</button>
+          <br>
+          <div >Upload your images here!</div>
+
+          <!-- <div class="errorSection" id="uploadErrorSection" style="display: none;">That doesn't seem right.</div> -->
+
+          <form id="boothForm">
+          <!-- <div class="subText">Images must be in .png format</div> -->
+          <br>
+          <div>What community?</div>
+          <select id="communitiesDropDown">
+          </select>
+          <div>And what event?</div>
+          <select id="eventDropDown">
+          </select>
+          <div>Which booth do you want?</div>
+          <select id="selectedBooth">
+            <option value="2023">FEST 2023</option>
+            <option value="2024">FEST 2024</option>
+          </select>
+          </form>
+          <!-- <div class="errorSection" id="errorSection" style="display: none;"">Error.</div> -->
+          <button style="display: none;" id="uploadButton">Upload</button>
+        </div>
       </div>
     </div>
-    <div id="unityContainer" style="width: 100%; height: 100%;"></div>
-  </body>
-  <style>
-    @font-face {
-      font-family: 'norwester';
-      src: url('./norwester.otf'),
-    }
+  </div>
+</body>
 
-    html, body {
-        margin: 0;
-        height: 95vh;
-        background-color: #212121;
-    }
-    .topnav {
-      background-color: #000000;
-      overflow: hidden;
-      font-family: 'norwester', sans-serif;
-    }
+<style>
+  @font-face {
+    font-family: 'norwester';
+    src: url('./norwester.otf'),
+  }
+
+  html, body {
+    margin: 0;
+    height: 95vh;
+    background-color: #212121;
+    font-family: 'norwester', sans-serif;
+    font-size: 0.9em;
+  }
+
+  input {
+    /* padding: 14px 16px; */
+    font-family: 'norwester', sans-serif;
+    text-align: center;
+    color: #f5f8fa;
+    text-decoration: none;
+    align-self: center;
+    object-fit: contain;
+  }
+
+  a {
+    color: #e66aeb;
+  }
+
+  input[type="text"], input[type="password"] {
+    background-color: #181818;
+    border: none;
+    border-radius: 1em;
+    border-bottom: 2px solid #e66aeb;
+    color: #dbdbdb;
+    font-size: 1.5em;
+    margin: 0.5em;
+    padding: 0.5em;
+    width: 80%;
+  }
+
+  input[type="text"]:focus, input[type="password"]:focus {
+    border-bottom: 2px solid #04c5fc;
+    outline: none;
+  }
+
+  button {
+    background-color: #6a6399;
+    border: none;
+    color: #dbdbdb;
+    font-size: 1.4em;
+    margin: 0.2em;
+    padding: 0.2em;
+    width: 80%;
+    border-radius: 1em;
+    box-shadow: 0 .5em 1em rgba(0, 0, 0, 0.25);
+  }
+
+  /* Animated hover and click */
+  button:hover {
+    background-color: #d89500;
+    color: #dbdbdb;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  button:active {
+    background-color: #04c5fc;
+    color: #e66aeb;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  select {
+    background-color: #181818;
+    border: none;
+    border-radius: 1em;
+    border-bottom: 2px solid #e66aeb;
+    color: #dbdbdb;
+    font-size: 1em;
+    margin: 0.25em;
+    padding: 0.25em;
+    width: 80%;
+    text-align-last: center;
+  }
+
+  .titleText {
+    font-size: 1.5em;
+    color: #dbdbdb;
+    margin: 0.5em;
+  }
+
+  .subText {
+    font-size: 1.1em;
+    color: #ac9a9a;
+  }
+
+  .errorSection {
+    color: #dbdbdb;
+    font-size: 1em;
+    margin: 0.2em;
+    padding: 0.2em;
+    width: 80%;
+    border-radius: 1em;
+    border-color: #ff0000;
+    border-style: solid;
+    background-color: #181818;
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.25);
+  }
+
+  .userNameMOTD {
+    font-size: 1.5em;
+    color: #dbdbdb;
+    margin: 0em;
+    background: linear-gradient(to right, #d36dbf, #5454c5);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .uploadContainer {
+    background-color: #181818;
+    border-radius: 1em;
+    border-color: #ffb000;
+    border-style: solid;
+    color: #dbdbdb;
+    font-size: 0.8em;
+    margin: 0.5em;
+    padding: 0.5em;
+    width: 80%;
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.25);
+  }
+
+  .uploadButtons {
+    font-size: 1.5em;
+  }
+
+  .smallText {
+    font-size: 0.8em;
+    color: #ac9a9a;
+  }
+
+  .uploadButtons .subText {
+    font-size: 0.8em;
+  }
+
+  .boxContainerLogin {
+    /* Align all items in the middle top */
+    row-gap: 0.4em;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 1em;
+    background-color: #181818;
+    margin: 1em;
+    border-radius: 1em;
+    padding: 1em;
+  }
+
+  .unityContainer {
+    /* Fill the entire space */
+    width: 100%;
+    height: 100%;
+    background-color: pink;
+  }
+
+  .mainContainer {
+    color: #dbdbdb;
+    text-align: center;
+    height: 100vh;
+    background-color: #757575;
+    display: grid;
+    grid-template-columns: auto 35vh;
+  }
+
+  .unityContainer {
+    background-color: #181818;
+  }
+
+  .rightContainer {
+    background-color: black;
+  }
+
+    #mobile-error {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    padding-top: 50vh;
+    z-index: 9999;
+  }
+
+  .boxContainer {
+    /* Align all items in the middle top */
+    row-gap: 0.4em;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 1.5em;
+    background-color: #181818;
+    margin: 1em;
+    border-radius: 1em;
+    padding: 1em;
+  }
+
+  .posterUploadGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 0.3em;
+  }
+
+  .subText {
+    font-size: 1.3em;
+    color: #ac9a9a;
+  }
+</style>
+
+<script type="module">
+
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js'
+  // Add Firebase products that you want to use
+  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js'
+
+  // Web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyDoZggY-UVoS1W2qynoWXvE6UJtXqj7ZDI",
+    authDomain: "projekt-staff-beta.firebaseapp.com",
+    projectId: "projekt-staff-beta",
+    storageBucket: "projekt-staff-beta.appspot.com",
+    messagingSenderId: "781466037536",
+    appId: "1:781466037536:web:91280b0c10cd4b1279bb45",
+    measurementId: "G-RXB809T8YX"
+  };
+
+  // PJKT
+  const PJKTAPIUrl = "https://beta.projektcommunity.com";
 
 
-    .logo {
-        padding: 14px 16px;
-        height: 48pt;
-        align-self: center;
-        object-fit: contain;
+  const firebaseApp = initializeApp(firebaseConfig);
+  const auth = getAuth(firebaseApp);
+
+  let cachedUserMe = null;
+  let cachedprojekts = null;
+
+  //////////////////////////
+  // Helper functions
+  //////////////////////////
+
+  // Send things to error notification
+  let sendErrorNotification = function(showErorr, message) {
+    let errorNotification = document.getElementById("errorNotification");
+    if (showErorr) {
+      errorNotification.style.display = "block";
+      errorNotification.innerText = message;
+    } else {
+      errorNotification.style.display = "none";
+    }
+  };
+
+  // Check if cookies are valid by checking /me on page load if yes, then show the upload buttons
+  // If no, then show the login buttons
+  document.addEventListener("DOMContentLoaded", async () => {
+    let me = await getMe();
+    if (me) {
+      cachedUserMe = me;
+      onUserLoggedIn();
+    } else {
+      // onUserLoggedOut();
+      // // Show the login buttons
+      // document.querySelector(".loginButtons").style.display = "block";
+
+      // // Hide the upload buttons
+      // document.querySelector(".uploadButtons").style.display = "none";
+    }
+  });
+
+  // Events that get triggered when the user logs in or out
+  let onUserLoggedIn = function() {
+    console.log("User logged in");
+
+    // Hide the login buttons
+    document.querySelector(".loginButtons").style.display = "none";
+
+    // Show the upload buttons
+    document.querySelector(".uploadButtons").style.display = "block";
+
+    // hide the codeCheck form
+    document.querySelector(".codeCheck").style.display = "none";
+
+    // hide the register form
+    document.querySelector(".registerForm").style.display = "none";
+
+    processingLoginStatusButton(false);
+
+    // Say hello to the user
+    const coolHellos = ["Yo! ", "Sup, ", "What's up, ", "Good day? ", "How's it hanging, "]
+    const randomHello = coolHellos[Math.floor(Math.random() * coolHellos.length)];
+    document.getElementById("userNameMOTD").innerText = randomHello + cachedUserMe.user.username;
+
+    console.log("Projekts", getProjekts());
+    // Get all the FEST projekts and populate the dropdown
+      getProjekts().then((projekts) => {
+      console.log(projekts);
+      let projektsDropdown = document.getElementById("eventDropDown");
+      projekts.projects.forEach((projekt) => {
+        if (!projekt.accepting_booth) return;
+        // Check if the booth_deadline_date has not already passed
+        let boothDeadlineDate = new Date(projekt.booth_deadline_date);
+        let currentDate = new Date();
+        if (boothDeadlineDate < currentDate) return;
+
+        let option = document.createElement("option");
+        option.value = projekt.id;
+        option.text = projekt.name;
+        projektsDropdown.appendChild(option);
+      });
+
+      // Get all the joined communities from me and populate the dropdown
+      let communitiesDropdown = document.getElementById("communitiesDropDown");
+      cachedUserMe.communityMemberships.forEach((community) => {
+        let option = document.createElement("option");
+        option.value = community.community.id;
+        option.text = community.community.name;
+        communitiesDropdown.appendChild(option);
+      });
+    });
+  };
+
+  // Request Image from Unity
+  let requestImageFromUnity = async function() {
+    return new Promise((resolve, reject) => {
+      window.loadedUnityInstance.SendMessage("Canvas", "jsRequestedImage");
+
+      // Wait for unityImageReady to be true
+      let interval = setInterval(() => {
+        if (window.unityImageReady) {
+          clearInterval(interval);
+          unityImageReady = false;
+          resolve(window.unityImage);
+        }
+      }, 100);
+    });
+  };
+
+  let onUserLoggedOut = function() {
+    console.log("User logged out");
+
+    // Show the login buttons
+    document.querySelector(".loginButtons").style.display = "block";
+
+    // Hide the register form
+    document.querySelector(".registerForm").style.display = "none";
+
+    // Hide the codeCheck form
+    document.querySelector(".codeCheck").style.display = "none";
+
+    // Hide the upload buttons
+    document.querySelector(".uploadButtons").style.display = "none";
+
+    // Clear the user name
+    document.getElementById("userNameMOTD").innerText = "";
+
+    // Clear the dropdowns
+    document.getElementById("communitiesDropDown").innerHTML = "";
+    document.getElementById("eventDropDown").innerHTML = "";
+
+    // Clear the cached user
+    cachedUserMe = null;
+    localStorage.clear();
+    sessionStorage.clear();
+
+    // Clear all errors
+    sendErrorNotification(false, "Logged out");
+    
+    // Clear all the cookies
+    logoutFromPJKTAPI();
+  };
+
+  // Check if the image is a PNG and is 2048x2048
+  let checkImage = async function(image) {
+      return new Promise((resolve, reject) => {
+        // Check if it's an image
+        if (!image.type.startsWith("image/")) {
+          console.error("Not an image");
+          document.getElementById("errorSection").style.display = "block";
+          document.getElementById("errorSection").innerText = "Not an image";
+          resolve(false);
+        }
+
+        let imageHold = new Image();
+        imageHold.src = URL.createObjectURL(image);
+
+        imageHold.onload = function() {   
+          
+          console.log("Image", imageHold);
+          // Check if image is 2048x2048
+          if (imageHold.naturalWidth === 2048 && imageHold.naturalHeight === 2048) {
+            console.log("Image is 2048x2048! Yipeee!");
+            document.getElementById("errorSection").innerText = "";
+            document.getElementById("errorSection").style.display = "none";
+            resolve(true);
+          } else {
+            console.error("Image is not 2048x2048");
+            document.getElementById("errorSection").style.display = "block";
+            document.getElementById("errorSection").innerText = "Image is not 2048x2048";
+            resolve(false);
+          }
+
+          // Check if image is a PNG
+          if (image.type !== "image/png") {
+            console.error("Image is not a PNG");
+            document.getElementById("errorSection").style.display = "block";
+            document.getElementById("errorSection").innerText = "Image is not a PNG";
+            resolve(false);
+          }
+
+          if (image.size > 10000000) {
+            console.error("Image is too large");
+            document.getElementById("errorSection").style.display = "block";
+            document.getElementById("errorSection").innerText = "Image is too large";
+            resolve(false);
+          }
+
+          resolve(false);
+        };
+        imageHold.onerror = function() {
+          console.error("Failed to load image");
+          resolve(false);
+        };
+      });
+  };
+
+  
+  //////////////////////////
+  // Firebase functions
+  //////////////////////////
+
+  // Login with firebase to get the user token
+  let firebaseSignInToken = function(email, password) {
+    return signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log("Firebase Signed in", user.uid);
+        const userToken = user.getIdToken().then((idToken) => {
+          console.log("Hewwwo from fiwebawse");
+          return idToken;
+        });
+        return userToken;
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        return null;
+      });
+  };
+
+  // Register with firebase
+  let firebaseRegister = function(email, password) {
+    return new Promise((resolve, reject) => {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          const userToken = user.getIdToken().then((idToken) => {
+            console.log("Hewwwo from fiwebawse");
+            resolve(idToken);
+          });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+          reject(null);
+        });
+    });
+  };
+  
+
+  //////////////////////////
+  // Web functions
+  //////////////////////////
+
+  console.log("Loaded");
+
+  let processingLoginStatusButton = function(boolean) {
+    if (boolean) {
+      document.getElementById("loginButton").innerText = "Logging in...";
+      document.getElementById("loginButton").disabled = true;
+    } else {
+      document.getElementById("loginButton").innerText = "Login";
+      document.getElementById("loginButton").disabled = false;
+    }
+  };
+  
+  let processingUploadStatusButton = function(boolean) {
+    if (boolean) {
+      document.getElementById("uploadButton").innerText = "Uploading...";
+      document.getElementById("uploadButton").disabled = true;
+    } else {
+      document.getElementById("uploadButton").innerText = "Upload";
+      document.getElementById("uploadButton").disabled = false;
+    }
+  };
+
+  // Login button
+  document.getElementById("loginButton").addEventListener("click", async () => {
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    processingLoginStatusButton(true);
+
+    let firebaseToken = await firebaseSignInToken(email, password);
+    if (firebaseToken) {
+      let pjktCookie = await loginToPJKTAPI(firebaseToken);
+      if (pjktCookie) {
+        // Get the user data
+        let me = await getMe();
+        let name = me.user.username;
+        cachedUserMe = me;
+
+        // Log me into string
+        console.log(me);
+
+        onUserLoggedIn();
+      } else {
+        processingLoginStatusButton(false);
+        console.error("Failed to login to PJKT API");
+        sendErrorNotification(true, "Failed to login to PJKT API.");
       }
+    } else {
+      processingLoginStatusButton(false);
+      console.error("Failed to login to Firebase");
+      sendErrorNotification(true, "Wrong email or password.");
+    }
+  });
 
-    .topnav input {
-      /* padding: 14px 16px; */
-      font-family: 'norwester', sans-serif;
-      text-align: center;
-      color: #f5f8fa;
-      text-decoration: none;
-      font-size: 0.7em;
-      align-self: center;
-      object-fit: contain;
-      /* background: #f5f8fa; */
+  // Login fields
+  document.getElementById("email").addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+      document.getElementById("password").focus();
+    }
+  });
+
+  document.getElementById("password").addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+      document.getElementById("loginButton").click();
+    }
+  });
+
+  // Register button
+  document.getElementById("registerButton").addEventListener("click", async () => {
+    document.querySelector(".loginButtons").style.display = "none";
+
+    // Show the codeCheck form to check the invite code
+    document.querySelector(".codeCheck").style.display = "block";
+  });
+
+  // Final register button
+  document.getElementById("registerSubmitButtonFinal").addEventListener("click", async () => {
+    let email = document.getElementById("registerEmail").value;
+    let username = document.getElementById("registerUsername").value;
+    let password = document.getElementById("registerPassword").value;
+    let passwordConfirm = document.getElementById("registerPasswordConfirm").value;
+
+    // Check if the passwords match
+    if (password !== passwordConfirm) {
+      console.error("Passwords do not match");
+      sendErrorNotification(true, "Passwords do not match");
+      return false;
     }
 
+    // Check if the password is at least 6 characters
+    if (password.length < 6) {
+      console.error("Password is too short");
+      sendErrorNotification(true, "Password is too short");
+      return false;
+    }
 
-    .topnav .title {
-        padding: 0.5em 0.5em;
-        text-align: center;
-        color:#f2f2f2;
-        text-decoration: none;
-        font-size: 2em;
+    // Check if the username is at least 3 characters
+    if (username.length < 3) {
+      console.error("Username is too short");
+      sendErrorNotification(true, "Username is too short");
+      return false;
+    }
+
+    // Check if the email is valid
+    if (!email.includes("@")) {
+      console.error("Email is invalid");
+      sendErrorNotification(true, "Email is invalid");
+      return false;
+    }
+    if (!email.includes(".")) {
+      console.error("Email is invalid");
+      sendErrorNotification(true, "Email is invalid");
+      return false;
+    }
+
+    // Register the user
+    console.log("Registering user", email, username);
+
+    // Make the button say "Registering..." and disable it
+    document.getElementById("registerSubmitButtonFinal").innerText = "Registering...";
+    document.getElementById("registerSubmitButtonFinal").disabled = true;
+
+    // Register on firebase
+    let firebaseToken = await firebaseRegister(email, password);
+    
+    registerUser(document.getElementById("inviteCode").value, username, firebaseToken).then(async (result) => {
+      if (result) {
+        console.log("Registered user");
+        document.querySelector(".registerForm").style.display = "none";
+        // Get the user data
+        let me = await getMe();
+        let name = me.user.username;
+        cachedUserMe = me;
+
+        // Log me into string
+        console.log(me);
+        onUserLoggedIn();
+        sendErrorNotification(false, "Hewo!");
+      } else {
+        console.error("Failed to register user");
+        sendErrorNotification(true, "Failed to register user");
+
+        // Make the button say "Register" and enable it
+        document.getElementById("registerSubmitButtonFinal").innerText = "Register";
+        document.getElementById("registerSubmitButtonFinal").disabled = false;
       }
-      </style>
-      <script>
-        UnityLoader.instantiate("unityContainer", "Build/b1b180d4c3258302d2a935b02ff843b6.json");
-      </script>
+    });
+  });
+
+  // Code check button
+  document.getElementById("codeCheckButton").addEventListener("click", async () => {
+    let inviteCode = document.getElementById("inviteCode").value;
+    console.log("Checking code", inviteCode);
+
+    // Check the code
+    let codeCheck = await checkInviteCode(inviteCode);
+    if (codeCheck) {
+      // Show the register form
+      document.querySelector(".registerForm").style.display = "block";
+
+      // Hide the codeCheck form
+      document.querySelector(".codeCheck").style.display = "none";
+
+      sendErrorNotification(false, "Hewo!");
+    } else {
+      console.error("Code is invalid");
+      sendErrorNotification(true, "Nope, that's not it.");
+    }
+  });
+
+
+  // Check if we are running on PC
+  if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/iPhone/i)) {
+    document.getElementById("mobile-error").style.display = "block";
+  }
+
+  // Logout button
+  document.getElementById("logoutButton").addEventListener("click", async () => {
+      onUserLoggedOut();
+      sendErrorNotification(false, "Logged out");
+  });
+
+  // Upload button
+  document.getElementById("uploadButton").addEventListener("click", async () => {
+    console.log("Uploading image");
+
+    processingUploadStatusButton(true);
+
+    let selectedCommunity = document.getElementById("communitiesDropDown").value;
+    let selectedEvent = document.getElementById("eventDropDown").value;
+    let selectedBooth = document.getElementById("selectedBooth").value;
+
+    // Get the image from Unity
+    // let image = document.getElementById("finalUploadButton").files[0];
+    let image = await requestImageFromUnity();
+    console.log("upload button image after req is done:", image);
+
+    // Check if the image is a PNG and is 2048x2048
+    // let result = await checkImage(image);
+    // console.log("Result", result);
+    // if (result) {
+    //   console.log("Image is good to upload!");
+    // } else {
+    //   console.error("Image is sad and cannot be uploaded :<");
+    //   return false;
+    // }
+
+    let communityName = document.getElementById("communitiesDropDown").options[document.getElementById("communitiesDropDown").selectedIndex].text;
+    let eventName = document.getElementById("eventDropDown").options[document.getElementById("eventDropDown").selectedIndex].text;
+    
+    // Rename the image to "nameOfTheCommunity_nameOfTheEvent_selectedBooth.png"
+    let imageName = communityName + "_" + eventName + "_" + selectedBooth + ".png";
+
+    console.log("Selected community", selectedCommunity);
+
+    // Rename the image
+    let renamedImage = new File([image], imageName, { type: "image/png" });
+    
+
+    console.log("Renamed image", renamedImage);
+
+    
+    // Upload the image there can be an error here
+    let uploadResult = await uploadBooth(selectedEvent, selectedCommunity, renamedImage, image);
+    // Handle the error result
+    if (uploadResult) {
+      console.log("Uploaded image");
+      sendErrorNotification(false, "Uploaded image");
+    } else {
+      console.error("Failed to upload image");
+      sendErrorNotification(true, "Failed to upload image");
+    }
+
+    console.log("Upload result", uploadResult);
+
+    processingUploadStatusButton(false);
+  });
+
+  // Get all the communities and populate the dropdown
+
+  //////////////////////////
+  // PJKT API
+  //////////////////////////
+
+  const registerUser = async function(inviteCode, username, firebaseUserID) {
+    console.log("Registering user");
+
+    return fetch(PJKTAPIUrl + "/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        inviteCode: inviteCode,
+        username: username,
+        idToken: firebaseUserID,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Registered user");
+          return true;
+        } else {
+          throw new Error("Failed to register user");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        return false;
+      });
+  };
+
+  // Login in to PJKTAPI, uses the firebase token to get the PJKT cookie
+  // This POST endpoint requires the firebase token to be sent in the body alongside csrftoken
+  const loginToPJKTAPI = function(firebaseToken) {
+    console.log("Logging in to PJKT API");
+    return fetch(PJKTAPIUrl + "/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        idToken: firebaseToken,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return true;
+          let responseOut = response.json();
+          cachedprojekts = responseOut;
+          return responseOut;
+        } else {
+          throw new Error("Failed to login to PJKT API");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        return null;
+      });
+  };
+
+  const logoutFromPJKTAPI = function() {
+    console.log("Logging out from PJKT API");
+
+    return fetch(PJKTAPIUrl + "/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Logged out from PJKT API");
+          return true;
+        } else {
+          throw new Error("Failed to logout from PJKT API");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        return false;
+      });
+  };
+
+  const getMe = function() {
+    console.log("Getting me from PJKT API");
+
+    return fetch(PJKTAPIUrl + "/me", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Got me from PJKT API");
+          let responseOut = response.json();
+          return responseOut;
+        } else {
+          throw new Error("Failed to get me from PJKT API");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        return null;
+      });
+  };
+
+  // Get the Projekts
+  const getProjekts = function() {
+    console.log("Getting projekts from PJKT API");
+
+    return fetch(PJKTAPIUrl + "/projects", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        // "name": "FEST",
+      },
+      credentials: "include",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Got projekts from PJKT API");
+          let responseOut = response.json();
+          
+          return responseOut;
+        } else {
+          throw new Error("Failed to get projekts from PJKT API");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        return null;
+      });
+  };
+  
+  // Upload file to booths
+  const uploadBooth = async function(projectId, communityId, boothFile, imagePreview) {
+    console.log("Uploading image to booth started");
+
+    return new Promise((resolve, reject) => {
+      let formData = new FormData();
+      formData.append("project_id", projectId);
+      formData.append("community_id", communityId);
+      formData.append("booth", boothFile);
+      formData.append("preview", imagePreview);
+
+      console.log("Sending form data: ", formData);
+
+      fetch(PJKTAPIUrl + "/booth/submit", {
+        method: "POST",
+        headers: {},
+        credentials: "include",
+        body: formData,
+      })
+        .then((response) => {
+          if (response.ok) {
+            console.log("Uploaded image to booth");
+            resolve(response.json());
+          } else {
+            let responseOut = response.json().then((responseOut) => {
+              console.error("Failed to upload image to booth RESPONSE OUT", responseOut.message);
+              sendErrorNotification(true, responseOut.message);
+
+              // Make the button say "Upload" and enable it
+              processingUploadStatusButton(false);
+
+              throw new Error(responseOut.message);
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          return false;
+        });
+    });
+  };
+
+  const checkInviteCode = function(inviteCode) {
+    console.log("Checking invite code");
+
+    return fetch(PJKTAPIUrl + "/auth/register/validate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        inviteCode: inviteCode,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Invite code is valid");
+          return true;
+        } else {
+          throw new Error("Invite code is invalid");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        return false;
+      });
+  };
+
+  //////////////////////////
+  // UNITY Loader
+  //////////////////////////
+
+  // If we are running Unity, continue to load the Unity instance
+  
+  var buildUrl = "Build";
+  var loaderUrl = buildUrl + "/bb0d9ecdb05db3e84da20bd14a4f84dc.loader.js";
+  var script = document.createElement("script");
+  script.src = loaderUrl;
+
+  // Get Canvas
+  var canvas = document.getElementById("unity-canvas");
+
+  script.onload = () => {
+        var config = {
+            dataUrl: buildUrl + "/ce9494ee016670e107d13741cc12c010.data.gz",
+            frameworkUrl: buildUrl + "/d324a62473f46b9769b75e656f96e5a3.framework.js.gz",
+            codeUrl: buildUrl + "/ed02cd7bd25360b17505cdc25fe05214.wasm.gz",
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "%UNITY_COMPANY_NAME%",
+            productName: "%UNITY_PRODUCT_NAME%",
+            productVersion: "%UNITY_VERSION%",
+        };
+            createUnityInstance(canvas, config, (progress) => {
+              // progressBarFull.style.width = 100 * progress + "%";
+            document.getElementById("progressNumber").innerText = "Downloading... " + Math.round(progress * 100) + "%";
+            console.log("Downloading... " + Math.round(progress * 100) + "%");
+            })
+            .then((unityInstance) => {
+              document.getElementById("progressNumber").style.display = "none";
+              window.loadedUnityInstance = unityInstance;
+              // Set the Unity canvas to be 100% width and height
+              canvas.style.width = "100%";
+              canvas.style.height = "100vh";
+
+              document.getElementById("uploadButton").style.display = "unset";
+            }).catch((message) => {
+                alert(message);
+            });
+    };
+
+    document.body.appendChild(script);
+</script>
 </html>
