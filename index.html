@@ -48,11 +48,10 @@
           <div>LCD Displays</div>
           <div>461x739</div>
         </div>
-        <div>Got last years template?</div>
         <div theme="font-size: 0.5">Login and submit down below!</div>
       </div>
       <div class="boxContainer">
-        <div>Got your poster ready?</div>
+        <div>Got last years template?</div>
         <div>Preview it here to submit it!</div>
         <div class="smallText">2048x2048</div>
         <div id="premadeUploadButton" class="title">
@@ -100,6 +99,11 @@
         <div style="display: none;" class="uploadButtons">
           <div class="userNameMOTD" id="userNameMOTD"></div>
           <button id="logoutButton">Logout</button>
+          <button id="loggedInInviteCode">Enter Invite Code</button>
+          <div style="display: none;" class="inviteCodeContainer">
+            <input type="text" id="inviteCodeLoggedIn" placeholder="Invite Code">
+            <button id="inviteCodeSubmitButton">Submit code</button>
+          </div>
           <br>
           <div >Upload your images here!</div>
 
@@ -623,6 +627,39 @@
   // Web functions
   //////////////////////////
 
+  // Invite code add to group thing when logged in
+  document.getElementById("loggedInInviteCode").addEventListener("click", () => {
+    document.querySelector(".inviteCodeContainer").style.display = "block";
+  });
+
+  // Submit the invite code when logged in inviteCodeSubmitButton
+  document.getElementById("inviteCodeSubmitButton").addEventListener("click", async () => {
+    let inviteCode = document.getElementById("inviteCodeLoggedIn").value;
+    console.log("Checking code", inviteCode);
+
+    // Check the code
+    let codeCheck = await checkInviteCode(inviteCode);
+    if (codeCheck) {
+      console.log("Code is valid");
+      sendErrorNotification(false, "Code is valid");
+
+      // Add the user to the community
+      addCommunityUsingInviteCode(inviteCode).then((result) => {
+        if (result) {
+          console.log("Added user to community");
+          sendErrorNotification(false, "Added user to community");
+        } else {
+          console.error("Failed to add user to community");
+          sendErrorNotification(true, "Failed to add user to community");
+        }
+      });
+    } else {
+      console.error("Code is invalid");
+      sendErrorNotification(true, "Code is invalid");
+    }
+  });
+  
+
   console.log("Loaded");
 
   let processingLoginStatusButton = function(boolean) {
@@ -791,6 +828,8 @@
       console.error("Code is invalid");
       sendErrorNotification(true, "Nope, that's not it.");
     }
+
+    
   });
 
 
@@ -866,6 +905,35 @@
   //////////////////////////
   // PJKT API
   //////////////////////////
+
+  const addCommunityUsingInviteCode = function(inviteCode) {
+    console.log("Adding community using invite code");
+
+    return new Promise((resolve, reject) => {
+      fetch(PJKTAPIUrl + "/users/user/invite", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          inviteCode: inviteCode,
+        }),
+      })
+        .then((response) => {
+          if (response.ok) {
+            console.log("Added community using invite code");
+            resolve(true);
+          } else {
+            throw new Error("Failed to add community using invite code");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          reject(false);
+        });
+    });
+  };
 
   const registerUser = async function(inviteCode, username, firebaseUserID) {
     console.log("Registering user");
@@ -1088,9 +1156,9 @@
 
   script.onload = () => {
         var config = {
-            dataUrl: buildUrl + "/a74f147679439c6560e0bc8ba2ff3a01.data",
+            dataUrl: buildUrl + "/ad7cbfdc0027e9321ce4826cec23d73f.data",
             frameworkUrl: buildUrl + "/fa52d6c68baddab91578654af730ca64.framework.js",
-            codeUrl: buildUrl + "/cd562ed9441c7e7dc914a0c379f3d6bd.wasm",
+            codeUrl: buildUrl + "/f5f169d3979471cef0cbf619dc70838d.wasm",
             streamingAssetsUrl: "StreamingAssets",
             companyName: "%UNITY_COMPANY_NAME%",
             productName: "%UNITY_PRODUCT_NAME%",
