@@ -126,6 +126,7 @@
           <div>And what event?</div>
           <select id="eventDropDown">
           </select>
+          <div class="smallText" id="eventDeadline">Deadline:</div>
           <div>Which booth do you want?</div>
           <select id="selectedBooth">
             <option value="2023">FEST 2023</option>
@@ -457,10 +458,10 @@
     const randomHello = coolHellos[Math.floor(Math.random() * coolHellos.length)];
     document.getElementById("userNameMOTD").innerText = randomHello + cachedUserMe.user.username;
 
-    console.log("Projekts", getProjekts());
     // Get all the FEST projekts and populate the dropdown
       getProjekts().then((projekts) => {
       console.log(projekts);
+      cachedprojekts = projekts;
       let projektsDropdown = document.getElementById("eventDropDown");
       projekts.projects.forEach((projekt) => {
         if (!projekt.accepting_booth) return;
@@ -474,6 +475,9 @@
         option.text = projekt.name;
         projektsDropdown.appendChild(option);
       });
+
+      // Populate the deadlin
+      deadlinePopulate(projektsDropdown.value);
 
       // Get all the joined communities from me and populate the dropdown
       let communitiesDropdown = document.getElementById("communitiesDropDown");
@@ -643,6 +647,29 @@
   //////////////////////////
   // Web functions
   //////////////////////////
+
+  // eventDeadline date when event is selected
+  document.getElementById("eventDropDown").addEventListener("change", async () => {
+    let selectedEvent = document.getElementById("eventDropDown").value;
+
+    // Populate the deadline
+    deadlinePopulate(selectedEvent);
+  });
+  
+  // Deadline function
+  let deadlinePopulate = function(selectedEvent) {
+    let DeadlineField = document.getElementById("eventDeadline");
+
+    console.log("Selected event", selectedEvent);
+
+    // use the cached projekts to get the deadline
+    cachedprojekts.projects.forEach((projekt) => {
+      if (projekt.id == selectedEvent) {
+        DeadlineField.innerText = "Deadline: " + new Date(projekt.booth_deadline_date).toLocaleDateString();
+        console.log("Deadline", new Date(projekt.booth_deadline_date).toLocaleDateString());
+      }
+    });
+  };
 
   // BackToLoginRegister button
   document.getElementById("BackToLoginRegister").addEventListener("click", () => {
@@ -1049,7 +1076,6 @@
         if (response.ok) {
           return true;
           let responseOut = response.json();
-          cachedprojekts = responseOut;
           return responseOut;
         } else {
           throw new Error("Failed to login to PJKT API");
@@ -1223,7 +1249,7 @@
 
   script.onload = () => {
         var config = {
-            dataUrl: buildUrl + "/d9ecd36e6034624d762078c57b7ce963.data",
+            dataUrl: buildUrl + "/465f318c0e0d8a752b4694daf3c298ef.data",
             frameworkUrl: buildUrl + "/fa52d6c68baddab91578654af730ca64.framework.js",
             codeUrl: buildUrl + "/f5f169d3979471cef0cbf619dc70838d.wasm",
             streamingAssetsUrl: "StreamingAssets",
