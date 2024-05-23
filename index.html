@@ -127,10 +127,11 @@
           <select id="eventDropDown">
           </select>
           <div class="smallText" id="eventDeadline">Deadline:</div>
+          <br>
           <div>Which booth do you want?</div>
           <select id="selectedBooth">
-            <option value="2023">FEST 2023</option>
             <option value="2024">FEST 2024</option>
+            <option value="2023">FEST 2023</option>
           </select>
           </form>
           <!-- <div class="errorSection" id="errorSection" style="display: none;"">Error.</div> -->
@@ -721,6 +722,8 @@
   // Invite code add to group thing when logged in
   document.getElementById("loggedInInviteCode").addEventListener("click", () => {
     document.querySelector(".inviteCodeContainer").style.display = "block";
+    // hide this button
+    document.getElementById("loggedInInviteCode").style.display = "none";
   });
 
   // Submit the invite code when logged in inviteCodeSubmitButton
@@ -1249,7 +1252,7 @@
 
   script.onload = () => {
         var config = {
-            dataUrl: buildUrl + "/465f318c0e0d8a752b4694daf3c298ef.data",
+            dataUrl: buildUrl + "/c38a6104e91269c8a6ee4625271c35e2.data",
             frameworkUrl: buildUrl + "/fa52d6c68baddab91578654af730ca64.framework.js",
             codeUrl: buildUrl + "/f5f169d3979471cef0cbf619dc70838d.wasm",
             streamingAssetsUrl: "StreamingAssets",
