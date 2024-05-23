@@ -392,8 +392,13 @@
   //////////////////////////
 
   // Send things to error notification
-  let sendErrorNotification = function(showErorr, message) {
+  let sendErrorNotification = function(showErorr, message, isGood) {
     let errorNotification = document.getElementById("errorNotification");
+    if (isGood) {
+      errorNotification.style.borderColor = "#00ff00";
+    } else {
+      errorNotification.style.borderColor = "#ff0000";
+    }
     if (showErorr) {
       errorNotification.style.display = "block";
       errorNotification.innerText = message;
@@ -422,6 +427,8 @@
   // Events that get triggered when the user logs in or out
   let onUserLoggedIn = function() {
     console.log("User logged in");
+
+    sendErrorNotification(false, "Logged in!", true);
 
     // Hide the login buttons
     document.querySelector(".loginButtons").style.display = "none";
@@ -489,6 +496,8 @@
 
   let onUserLoggedOut = function() {
     console.log("User logged out");
+
+    sendErrorNotification(false, "Logged out", true);
 
     // Show the login buttons
     document.querySelector(".loginButtons").style.display = "block";
@@ -647,10 +656,10 @@
       addCommunityUsingInviteCode(inviteCode).then((result) => {
         if (result) {
           console.log("Added user to community");
-          sendErrorNotification(false, "Added user to community");
+          sendErrorNotification(false, "Added user to community", true);
         } else {
           console.error("Failed to add user to community");
-          sendErrorNotification(true, "Failed to add user to community");
+          sendErrorNotification(true, "Failed to add user to community", false);
         }
       });
     } else {
@@ -794,6 +803,8 @@
         let name = me.user.username;
         cachedUserMe = me;
 
+        sendErrorNotification(true, "Registered, logging in..", true);
+
         // Log me into string
         console.log(me);
         onUserLoggedIn();
@@ -817,6 +828,7 @@
     // Check the code
     let codeCheck = await checkInviteCode(inviteCode);
     if (codeCheck) {
+      sendErrorNotification(true, "Yep, code is good.", true);
       // Show the register form
       document.querySelector(".registerForm").style.display = "block";
 
@@ -841,7 +853,7 @@
   // Logout button
   document.getElementById("logoutButton").addEventListener("click", async () => {
       onUserLoggedOut();
-      sendErrorNotification(false, "Logged out");
+      sendErrorNotification(true, "Logged out", true);
   });
 
   // Upload button
@@ -889,7 +901,7 @@
     // Handle the error result
     if (uploadResult) {
       console.log("Uploaded image");
-      sendErrorNotification(false, "Uploaded image");
+      sendErrorNotification(true, "Image has been submitted.", true);
     } else {
       console.error("Failed to upload image");
       sendErrorNotification(true, "Failed to upload image");
@@ -1156,7 +1168,7 @@
 
   script.onload = () => {
         var config = {
-            dataUrl: buildUrl + "/ad7cbfdc0027e9321ce4826cec23d73f.data",
+            dataUrl: buildUrl + "/99a4e30f1f58b42c8261620e5bd2e551.data",
             frameworkUrl: buildUrl + "/fa52d6c68baddab91578654af730ca64.framework.js",
             codeUrl: buildUrl + "/f5f169d3979471cef0cbf619dc70838d.wasm",
             streamingAssetsUrl: "StreamingAssets",
