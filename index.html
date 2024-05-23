@@ -79,13 +79,20 @@
           <button id="loginButton">Login</button>
           <br>
           <br>
-          <div>Need an account? <button id="registerButton">Register!</button> </div>
+          <button id="registerButton">Register!</button>
+          <button id="forgotPasswordButton">Forgot Password?</button>
+        </div>
+        <div class="forgotPasswordSection" style="display: none;">
+          <input type="text" id="forgotPasswordEmail" placeholder="Email">
+          <button id="forgotPasswordButtonFinal">Send Reset Email</button>
+          <button id="BackToLogin">Back to Login</button>
         </div>
         <div style="display: none;" class="codeCheck">
           <div class="titleText">Nuh uh, what's the passcode?</div>
           <!-- <div class="errorSection" id="codeCheckErrorSection" style="display: none;">Error.</div> -->
           <input type="text" id="inviteCode" placeholder="Invite Code">
           <button id="codeCheckButton">Check Code</button>
+          <button id="BackToLoginCodeCheck">Back to Login</button>
         </div>
         <div style="display: none;"class="registerForm">
           <div class="titleText">Hell YE! Register here!</div>
@@ -95,6 +102,7 @@
           <input type="password" id="registerPassword" placeholder="Password">
           <input type="password" id="registerPasswordConfirm" placeholder="Confirm Password">
           <button id="registerSubmitButtonFinal">Register</button>
+          <button id="BackToLoginRegister">Back to Login</button>
         </div>
         <div style="display: none;" class="uploadButtons">
           <div class="userNameMOTD" id="userNameMOTD"></div>
@@ -362,7 +370,7 @@
 
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js'
   // Add Firebase products that you want to use
-  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js'
+  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js'
 
   // Web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -635,6 +643,53 @@
   //////////////////////////
   // Web functions
   //////////////////////////
+
+  // BackToLoginRegister button
+  document.getElementById("BackToLoginRegister").addEventListener("click", () => {
+    document.querySelector(".registerForm").style.display = "none";
+    document.querySelector(".codeCheck").style.display = "none";
+    document.querySelector(".loginButtons").style.display = "block";
+  });
+
+  // BackToLoginCodeCheck button
+  document.getElementById("BackToLoginCodeCheck").addEventListener("click", () => {
+    document.querySelector(".codeCheck").style.display = "none";
+    document.querySelector(".loginButtons").style.display = "block";
+  });
+
+  // Back to login button
+  document.getElementById("BackToLogin").addEventListener("click", () => {
+    document.querySelector(".codeCheck").style.display = "none";
+    document.querySelector(".registerForm").style.display = "none";
+    document.querySelector(".forgotPasswordSection").style.display = "none";
+
+    document.querySelector(".loginButtons").style.display = "block";
+  });
+
+  // forgotPasswordEmail button
+  document.getElementById("forgotPasswordButton").addEventListener("click", () => {
+    document.querySelector(".loginButtons").style.display = "none";
+
+    // Show the forgot password form
+    document.querySelector(".forgotPasswordSection").style.display = "block";
+  });
+
+  // forgotPasswordButtonFinal button
+  document.getElementById("forgotPasswordButtonFinal").addEventListener("click", async () => {
+    let email = document.getElementById("forgotPasswordEmail").value;
+    console.log("Forgot password for", email);
+
+    // Send the password reset email
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        console.log("Password reset email sent");
+        sendErrorNotification(true, "Password reset email sent", true);
+      })
+      .catch((error) => {
+        console.error("Failed to send password reset email", error);
+        sendErrorNotification(true, "Failed to send password reset email");
+      });
+  });
 
   // Invite code add to group thing when logged in
   document.getElementById("loggedInInviteCode").addEventListener("click", () => {
@@ -1168,7 +1223,7 @@
 
   script.onload = () => {
         var config = {
-            dataUrl: buildUrl + "/99a4e30f1f58b42c8261620e5bd2e551.data",
+            dataUrl: buildUrl + "/d9ecd36e6034624d762078c57b7ce963.data",
             frameworkUrl: buildUrl + "/fa52d6c68baddab91578654af730ca64.framework.js",
             codeUrl: buildUrl + "/f5f169d3979471cef0cbf619dc70838d.wasm",
             streamingAssetsUrl: "StreamingAssets",
