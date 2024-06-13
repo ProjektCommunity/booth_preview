@@ -980,9 +980,42 @@
 
     console.log("Renamed image", renamedImage);
 
-    
-    // Upload the image there can be an error here
-    let uploadResult = await uploadBooth(selectedEvent, selectedCommunity, renamedImage, image);
+    // Dumb fix, get the first <input>'s file and just use it as a thumbnail
+    let firstInput = document.querySelector("input[type=file]");
+    let resizedImage = firstInput.files[0];
+
+    if (resizedImage.type !== "image/png") {
+    // Make it a png
+    resizedImage = await convertToPNG(resizedImage);
+
+    }
+
+    async function convertToPNG(image) {
+        try {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = image.width;
+        canvas.height = image.height;
+        ctx.drawImage(image, 0, 0);
+        const dataUrl = canvas.toDataURL('image/png');
+        const blob = await fetch(dataUrl).then((res) => res.blob());
+        return new File([blob], 'resizedImage.png', { type: 'image/png' });
+        } catch (error) {
+        console.error('Failed to convert image to PNG:', error);
+        // Create a white PNG image
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 1;
+        canvas.height = 1;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, 1, 1);
+        const dataUrl = canvas.toDataURL('image/png');
+        const blob = await fetch(dataUrl).then((res) => res.blob());
+        return new File([blob], 'resizedImage.png', { type: 'image/png' });
+        }
+      }
+
+    let uploadResult = await uploadBooth(selectedEvent, selectedCommunity, renamedImage, resizedImage);
     // Handle the error result
     if (uploadResult) {
       console.log("Uploaded image");
@@ -1252,7 +1285,7 @@
 
   script.onload = () => {
         var config = {
-            dataUrl: buildUrl + "/949b85502eb1d5b41bff01a6eff3995a.data",
+            dataUrl: buildUrl + "/0d9cf935e4335aa61626dc5648dad792.data",
             frameworkUrl: buildUrl + "/fa52d6c68baddab91578654af730ca64.framework.js",
             codeUrl: buildUrl + "/f5f169d3979471cef0cbf619dc70838d.wasm",
             streamingAssetsUrl: "StreamingAssets",
