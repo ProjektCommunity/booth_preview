@@ -984,11 +984,7 @@
     let firstInput = document.querySelector("input[type=file]");
     let resizedImage = firstInput.files[0];
 
-    if (resizedImage.type !== "image/png") {
-    // Make it a png
     resizedImage = await convertToPNG(resizedImage);
-
-    }
 
     async function convertToPNG(image) {
         try {
@@ -1285,7 +1281,7 @@
 
   script.onload = () => {
         var config = {
-            dataUrl: buildUrl + "/0d9cf935e4335aa61626dc5648dad792.data",
+            dataUrl: buildUrl + "/47ba2cb0c5e0a8d9d73458f21ba4da13.data",
             frameworkUrl: buildUrl + "/fa52d6c68baddab91578654af730ca64.framework.js",
             codeUrl: buildUrl + "/f5f169d3979471cef0cbf619dc70838d.wasm",
             streamingAssetsUrl: "StreamingAssets",
