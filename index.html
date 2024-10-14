@@ -131,8 +131,7 @@
           <br>
           <div>Which booth do you want?</div>
           <select id="selectedBooth">
-            <option value="2024">FEST 2024</option>
-            <option value="2023">FEST 2023</option>
+            <option value="2024">HORRORCON 2024</option>
           </select>
           </form>
           <!-- <div class="errorSection" id="errorSection" style="display: none;"">Error.</div> -->
@@ -1273,7 +1272,7 @@
   // If we are running Unity, continue to load the Unity instance
   
   var buildUrl = "Build";
-  var loaderUrl = buildUrl + "/bb0d9ecdb05db3e84da20bd14a4f84dc.loader.js";
+  var loaderUrl = buildUrl + "/5336a4b2c43054286fd70b1faa467eee.loader.js";
   var script = document.createElement("script");
   script.src = loaderUrl;
 
@@ -1282,9 +1281,9 @@
 
   script.onload = () => {
         var config = {
-            dataUrl: buildUrl + "/88102373cecc693b977d32598230d35d.data.gz",
-            frameworkUrl: buildUrl + "/884296e7dcbdcb55b2607926f930f444.framework.js.gz",
-            codeUrl: buildUrl + "/4141f2609359947c0b20ea8650c2745a.wasm.gz",
+            dataUrl: buildUrl + "/ff607ee49b9d553b6698f511104cbf96.data.unityweb",
+            frameworkUrl: buildUrl + "/884296e7dcbdcb55b2607926f930f444.framework.js.unityweb",
+            codeUrl: buildUrl + "/4141f2609359947c0b20ea8650c2745a.wasm.unityweb",
             streamingAssetsUrl: "StreamingAssets",
             companyName: "%UNITY_COMPANY_NAME%",
             productName: "%UNITY_PRODUCT_NAME%",
