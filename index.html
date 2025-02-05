@@ -27,7 +27,7 @@
           <div>2048x512</div>
         </div>
         <div id="neonGradientButton" class="uploadContainer">
-          <div>Candle Lights</div>
+          <div>Neon Gradient</div>
           <div>213x150</div>
           <div>*Lighting is not previewed here</div>
         </div>
@@ -37,7 +37,7 @@
             <div>764x1357</div>
           </div>
           <div id="deskPosterButton" class="uploadContainer">
-            <div>Small Boat Poster</div>
+            <div>Small Table Poster</div>
             <div>462x761</div>
           </div>
           <div id="rightPosterButton" class="uploadContainer">
@@ -46,7 +46,7 @@
           </div>
         <!-- </div> -->
         <div id="lcdDisplayPoster" class="uploadContainer">
-          <div>Booth Decor</div>
+          <div>Booth Background Wall</div>
           <div>461x739</div>
         </div>
         <div theme="font-size: 0.5">Login and submit down below!</div>
@@ -89,14 +89,14 @@
           <button id="BackToLogin">Back to Login</button>
         </div>
         <div style="display: none;" class="codeCheck">
-          <div class="titleText">Nuh uh, what's the passcode?</div>
+          <div class="titleText">Nuh uh, what's the magic code?</div>
           <!-- <div class="errorSection" id="codeCheckErrorSection" style="display: none;">Error.</div> -->
           <input type="text" id="inviteCode" placeholder="Invite Code">
           <button id="codeCheckButton">Check Code</button>
           <button id="BackToLoginCodeCheck">Back to Login</button>
         </div>
         <div style="display: none;"class="registerForm">
-          <div class="titleText">Hell YE! Register here!</div>
+          <div class="titleText">Hell YE? Register here!</div>
           <!-- <div class="errorSection" id="registerErrorSection" style="display: none;">That doesn't seem right.</div> -->
           <input type="text" id="registerEmail" placeholder="Email">
           <input type="text" id="registerUsername" placeholder="Username">
@@ -129,11 +129,11 @@
           </select>
           <div class="smallText" id="eventDeadline">Deadline:</div>
           <br>
-          <div>Which booth do you want?</div>
-          <select id="selectedBooth">
-            <option value="2024">HORRORCON 2024</option>
-          </select>
-          </form>
+            <div style="display: none;">Which booth do you want?</div>
+            <select id="selectedBooth" style="display: none;">
+            <option value="2025">2025</option>
+            </select>
+            </form>
           <!-- <div class="errorSection" id="errorSection" style="display: none;"">Error.</div> -->
           <button style="display: none;" id="uploadButton">Upload</button>
         </div>
@@ -970,7 +970,7 @@
     let eventName = document.getElementById("eventDropDown").options[document.getElementById("eventDropDown").selectedIndex].text;
     
     // Rename the image to "nameOfTheCommunity_nameOfTheEvent_selectedBooth.png"
-    let imageName = communityName + "_" + eventName + "_" + selectedBooth + ".png";
+    let imageName = communityName + "_" + eventName + "_FEST_" + "2025" + ".png";
 
     console.log("Selected community", selectedCommunity);
 
@@ -1281,7 +1281,7 @@
 
   script.onload = () => {
         var config = {
-            dataUrl: buildUrl + "/c6132f6a588ea83acd0dd4ef9146f1d1.data.unityweb",
+            dataUrl: buildUrl + "/c1fd2a31870c453e4729dee266ec08d7.data.unityweb",
             frameworkUrl: buildUrl + "/884296e7dcbdcb55b2607926f930f444.framework.js.unityweb",
             codeUrl: buildUrl + "/4141f2609359947c0b20ea8650c2745a.wasm.unityweb",
             streamingAssetsUrl: "StreamingAssets",
